@@ -4,4 +4,14 @@ type Currency = {
 	price: string;
 }
 
-export type { Currency };
+type Rate = {
+	rate: number;
+	name: string;
+	currency: string;
+	createdAt: string;
+}
+interface HomeProps {
+	rates: Rate[];
+}
+
+export type { Currency, Rate, HomeProps };

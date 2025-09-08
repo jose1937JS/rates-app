@@ -11,31 +11,15 @@ import {
 } from 'react-native';
 // import  NumericPad  from  'react-native-numeric-pad'
 import { Lucide } from "@react-native-vector-icons/lucide";
-import { Currency } from '../types/types';
+import { Rate, HomeProps } from '../types/types';
 import styles from './homeStyles';
 
-export default function Home() {
-  const currencies : Currency[] = [
-    {
-      id: 1,
-      name: 'BCV',
-      price: '145'
-    },
-    {
-      id: 2,
-      name: 'USDT',
-      price: '214'
-    },
-    {
-      id: 3,
-      name: 'EURO',
-      price: '170'
-    }
-  ];
+export default function Home({ rates }: HomeProps) {
+  console.log({ rates });
 
   const [fromPrice, setFromPrice] = useState(1);
-  const [toPrice, setToPrice] = useState(0);
-  const [selectedCurrency, setSelectedCurrency] = useState<Currency>(currencies[0]);
+  const [toPrice, setToPrice] = useState((rates[0].rate).toFixed(2) as unknown as number);
+  const [selectedCurrency, setSelectedCurrency] = useState<Rate>(rates[0]);
   const [isPressed, setIsPressed] = useState(false);
 
   const translateYFromPrice = useRef(new Animated.Value(0)).current;
@@ -43,7 +27,7 @@ export default function Home() {
   const translateYRefPrice = useRef(new Animated.Value(0)).current;
   const rotationButtonMoneyChanger = useRef(new Animated.Value(0)).current;
 
-  const onPressBadge = (currency: Currency) => {
+  const onPressBadge = (currency: Rate) => {
     setSelectedCurrency(currency);
     calculateToPrice(fromPrice, currency);
   };
@@ -62,13 +46,13 @@ export default function Home() {
   }
 
   const onChangeToPriceText = (text: string) => {
-    const from = +text / parseFloat(selectedCurrency.price);
+    const from = +text / selectedCurrency.rate;
     setFromPrice(from.toFixed(2) as unknown as number);
     setToPrice(+text);
   }
 
-  const calculateToPrice = (from: number, currency: Currency) => {
-    const price = from * parseFloat(currency.price);
+  const calculateToPrice = (from: number, currency: Rate) => {
+    const price = from * currency.rate;
     setToPrice(price.toFixed(2) as unknown as number);
   }
 
@@ -120,9 +104,9 @@ export default function Home() {
           >
             <View>
               <View style={styles.moneyContainer}>
-                { selectedCurrency.name == 'BCV' && <Image style={styles.currencyIcon} source={require('../assets/bcv.jpeg')} />}
-                { selectedCurrency.name == 'EURO' && <Image style={styles.currencyIcon} source={require('../assets/euro.png')} />}
-                { selectedCurrency.name == 'USDT' && <Image style={styles.currencyIcon} source={require('../assets/usdt.jpg')} />}
+                { selectedCurrency.currency == 'BCV_USD' && <Image style={styles.currencyIcon} source={require('../assets/bcv.jpeg')} />}
+                { selectedCurrency.currency == 'BCV_EUR' && <Image style={styles.currencyIcon} source={require('../assets/euro.png')} />}
+                { selectedCurrency.currency == 'YD_USD' && <Image style={styles.currencyIcon} source={require('../assets/usdt.jpg')} />}
                 <TextInput
                   editable={isPressed ? false : true}
                   autoFocus
@@ -133,10 +117,10 @@ export default function Home() {
                 />
               </View>
               <View style={styles.badgeContainer}>
-                {currencies.map((currency) => (
+                {rates.map((currency) => (
                   <TouchableOpacity 
-                    key={currency.id}
-                    style={currency.name == selectedCurrency.name ? [styles.badge, styles.badgeBg] : styles.badge }
+                    key={Math.random().toString()}
+                    style={currency.currency == selectedCurrency.currency ? [styles.badge, styles.badgeBg] : styles.badge }
                     onPress={() => onPressBadge(currency)}
                   >
                     <Text style={styles.badgeText}>{currency.name}</Text>
@@ -184,7 +168,7 @@ export default function Home() {
           {/* Exhample text */}
           <Animated.View style={{ transform: [{ translateY: translateYRefPrice }] } }>
             <Text style={[styles.textExample, { marginTop: isPressed ? 5 : 20 }]}>
-              1 {selectedCurrency.name} = {selectedCurrency.price} VES
+              1 {selectedCurrency.name} = {selectedCurrency.rate} VES
             </Text>
           </Animated.View>
         </View>
