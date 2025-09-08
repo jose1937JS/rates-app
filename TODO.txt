@@ -1,0 +1,2 @@
+1. En la vista AppContent mientras se carga la data, modificar la animacion para que sea mas agradable el efecto fadeIn y fadeOut y no cambie bruscamente.
+2. Modificar en la vista principal al momento de cambiar el orden de las monedas que calcule en base a la moneda que quede arriba

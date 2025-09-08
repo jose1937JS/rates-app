@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, ImageBackground, Text, View } from 'react-native';
+import { StyleSheet, ImageBackground, Text, View, Image, Animated } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Home from '../../screens/Home';
 import { fetchDollarPrice } from '../../api/dollar';
@@ -19,13 +19,52 @@ function AppContent() {
     require('../../assets/bg/warren-bh4LQHcOcxE-unsplash.jpg'),
   ];
 
-  const randomIndex = Math.floor(Math.random() * images.length);
-  const ramndomImage = images[randomIndex];
+  const opacity = React.useRef(new Animated.Value(1)).current;
+  const animationRef = React.useRef<Animated.CompositeAnimation | null>(null);
 
+  // Animación fadeIn/fadeOut en loop mientras isLoading
   const {data, error, isLoading} = useQuery({
     queryKey: ['dollarPrice'],
     queryFn: fetchDollarPrice,
   });
+  
+  React.useEffect(() => {
+    if (isLoading) {
+      opacity.setValue(0);
+      animationRef.current = Animated.loop(
+        Animated.sequence([
+          Animated.timing(opacity, {
+            toValue: 1,
+            duration: 1000,
+            useNativeDriver: true,
+          }),
+          Animated.timing(opacity, {
+            toValue: 0,
+            duration: 1000,
+            useNativeDriver: true,
+          }),
+        ])
+      );
+      animationRef.current.start();
+    } else {
+      // Detener animación y dejar opacidad en 1
+      if (animationRef.current) {
+        animationRef.current.stop();
+      }
+      opacity.setValue(1);
+    }
+    // cleanup
+    return () => {
+      if (animationRef.current) {
+        animationRef.current.stop();
+      }
+    };
+  }, [isLoading, opacity]);
+
+
+  // Select a random image from the array
+  const randomIndex = Math.floor(Math.random() * images.length);
+  const ramndomImage = images[randomIndex];
 
   if(error) {
     console.error('Error fetching dollar price:', error);
@@ -33,15 +72,12 @@ function AppContent() {
     return;
   }
 
-  if(data) {
-    console.log('Data fetched:', data);
-    // setDataTest(data);
-  }
-
   if(isLoading) {
     return (
-      <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
-        <Text>Loading</Text>
+      <View style={styles.container}>
+        <Animated.View style={{ opacity: opacity }}>
+          <Image style={styles.loaderImage} source={require('../../assets/logo.png')} />
+        </Animated.View>
       </View>
     )
   }
@@ -64,7 +100,14 @@ function AppContent() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'center', 
+    alignItems: 'center'
   },
+  loaderImage: {
+    width: 300,
+    height: 300,
+    resizeMode: 'contain',
+  }
 });
 
 export default AppContent;

@@ -97,7 +97,6 @@ export default function Home({ rates }: HomeProps) {
     >
       <View style={styles.container}>
         <View style={styles.square}>
-          <Text>isPressed: {JSON.stringify(isPressed)}</Text>
           {/* From Money container */}
           <Animated.View
             style={{ transform: [{ translateY: translateYFromPrice }] } }
