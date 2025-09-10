@@ -29,14 +29,13 @@ export default function Home({ rates }: HomeProps) {
 
   const onPressBadge = (currency: Rate) => {
     setSelectedCurrency(currency);
-    calculateToPrice(fromPrice, currency);
+    const price = isPressed ? toPrice : fromPrice;
+    calculateToPrice(price, currency);
   };
 
   const formatInput = (text: string) => {
     // Remove non-numeric characters except for the decimal point
     const cleanedText = text.replace(/[^0-9]/g, '');
-    console.log('cleanedText', cleanedText);
-
     return +cleanedText
   }
 
@@ -52,8 +51,15 @@ export default function Home({ rates }: HomeProps) {
   }
 
   const calculateToPrice = (from: number, currency: Rate) => {
-    const price = from * currency.rate;
-    setToPrice(price.toFixed(2) as unknown as number);
+    const price = isPressed ? from / currency.rate : from * currency.rate;
+    const result = price.toFixed(2) as unknown as number;
+
+    if(isPressed) {
+      setFromPrice(result);
+    }
+    else {
+      setToPrice(result);
+    }
   }
 
   const onPressMoneyChanger = () => {
@@ -97,6 +103,7 @@ export default function Home({ rates }: HomeProps) {
     >
       <View style={styles.container}>
         <View style={styles.square}>
+          <Text>isPressed: { JSON.stringify(isPressed) }</Text>
           {/* From Money container */}
           <Animated.View
             style={{ transform: [{ translateY: translateYFromPrice }] } }
