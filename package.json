@@ -7,7 +7,8 @@
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "android:apk": "cd android && ./gradlew assembleRelease"
   },
   "dependencies": {
     "@react-native-vector-icons/lucide": "^12.3.0",
@@ -20,6 +21,7 @@
     "react-native-numeric-pad": "^1.1.5",
     "react-native-reanimated": "^4.0.2",
     "react-native-safe-area-context": "^5.5.2",
+    "react-native-shake": "^6.7.8",
     "react-native-worklets": "^0.4.2"
   },
   "devDependencies": {

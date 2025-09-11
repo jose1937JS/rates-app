@@ -41,7 +41,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   textExample: {
-    fontSize: 14,
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
   },
   badge: {
     width: 80,

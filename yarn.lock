@@ -5629,6 +5629,11 @@ react-native-safe-area-context@^5.5.2:
   resolved "https://registry.yarnpkg.com/react-native-safe-area-context/-/react-native-safe-area-context-5.6.1.tgz#cb4d249ef1a6f7e8fd0cfdfa9764838dffda26b6"
   integrity sha512-/wJE58HLEAkATzhhX1xSr+fostLsK8Q97EfpfMDKo8jlOc1QKESSX/FQrhk7HhQH/2uSaox4Y86sNaI02kteiA==
 
+react-native-shake@^6.7.8:
+  version "6.7.8"
+  resolved "https://registry.yarnpkg.com/react-native-shake/-/react-native-shake-6.7.8.tgz#346c0f43237a2916b8eabf787c1da58e689e88dc"
+  integrity sha512-XE4Y+3AJ5gqoqHo0lT5kGwryU1/xeq2wkE6A7hruoS+M97kAZKVdyhkl0LO6deQGdpvBT7HNoJTbmYd8arpm2A==
+
 react-native-worklets@^0.4.2:
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/react-native-worklets/-/react-native-worklets-0.4.2.tgz#7b571a64a0d340ffab156f74bc2efc66bda75e57"
