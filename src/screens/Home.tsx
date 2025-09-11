@@ -14,7 +14,7 @@ import { Lucide } from "@react-native-vector-icons/lucide";
 import { Rate, HomeProps } from '../types/types';
 import styles from './homeStyles';
 import RNShake from 'react-native-shake';
-import { formatPrice, unFormatPrice, formatDate } from '../utils/helpers';
+import { formatPrice, formatDate } from '../utils/helpers';
 
 export default function Home({ rates }: HomeProps) {
   // console.log({ rates });
@@ -29,6 +29,7 @@ export default function Home({ rates }: HomeProps) {
   const translateYRefPrice = useRef(new Animated.Value(0)).current;
   const rotationButtonMoneyChanger = useRef(new Animated.Value(0)).current;
 
+  // Shake event listener to reset prices
   React.useEffect(() => {
     const subscription = RNShake.addListener(() => {
       setFromPrice(1);
