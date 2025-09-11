@@ -61,7 +61,6 @@ function AppContent() {
     };
   }, [isLoading, opacity]);
 
-
   // Select a random image from the array
   const randomIndex = Math.floor(Math.random() * images.length);
   const ramndomImage = images[randomIndex];
@@ -101,7 +100,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center', 
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: '#faf7ed',
   },
   loaderImage: {
     width: 300,

@@ -95,7 +95,7 @@ export default function Home({ rates }: HomeProps) {
   const onPressMoneyChanger = () => {
     // Convierte los valores formateados de vuelta a números para el cálculo
     if(!isPressed) {
-      setToPrice(unFormatPrice(toPrice.toString()));
+      setToPrice(toPrice);
     }
 
     Animated.parallel([
@@ -209,7 +209,7 @@ export default function Home({ rates }: HomeProps) {
           </Animated.View>
           
           <View style={{ marginTop: isPressed ? 40 : 20 }}>
-            <Text>Ultima actualización a las { formatDate(selectedCurrency.createdAt) }</Text>
+            <Text>Ultima actualización: { formatDate(selectedCurrency.createdAt) }</Text>
           </View>
         </View>
       </View>
