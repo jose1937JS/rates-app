@@ -8,6 +8,7 @@ import {
   KeyboardAvoidingView, 
   Platform,
   Animated,
+  Vibration
 } from 'react-native';
 // import  NumericPad  from  'react-native-numeric-pad'
 import { Lucide } from "@react-native-vector-icons/lucide";
@@ -34,6 +35,7 @@ export default function Home({ rates }: HomeProps) {
     const subscription = RNShake.addListener(() => {
       setFromPrice(1);
       setToPrice((selectedCurrency.rate).toFixed(2));
+      Vibration.vibrate([0, 100]);
     });
 
     return () => {
