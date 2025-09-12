@@ -21,8 +21,7 @@ const styles = StyleSheet.create({
   moneyContainer : {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '100%',
+    width: windowWidth * 0.9 - 40,
     height: 70,
     borderWidth: 1,
     borderRadius: 20,
@@ -72,6 +71,8 @@ const styles = StyleSheet.create({
     fontSize: 40,
     fontWeight: 'bold',
     backgroundColor: 'transparent',
+    width: windowWidth * 0.9 - 110,
+    textAlign: 'right',
   },
   currencyIcon: {
     width: 50,

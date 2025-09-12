@@ -212,7 +212,7 @@ export default function Home({ rates }: HomeProps) {
           </Animated.View>
           
           <View style={{ marginTop: isPressed ? 40 : 20 }}>
-            <Text>Ultima actualización: { formatDate(selectedCurrency.createdAt) }</Text>
+            <Text>Última actualización: { formatDate(selectedCurrency.createdAt) }</Text>
           </View>
         </View>
       </View>
