@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import { StyleSheet, ImageBackground, Text, View, Image, Animated,ToastAndroid } from 'react-native';
+import React from 'react';
+import { StyleSheet, ImageBackground, Text, View, Image, Animated,ToastAndroid, Platform} from 'react-native';
 // import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Home from '../../screens/Home';
 import { fetchDollarPrice, getActualRates } from '../../api/dollar';
@@ -23,7 +23,7 @@ function AppContent() {
   const animationRef = React.useRef<Animated.CompositeAnimation | null>(null);
 
   // Queries
-  const { data, isLoading, error } = useQuery({ 
+  let { data, isLoading, error } = useQuery({ 
     queryKey: ['todos'], 
     queryFn: fetchDollarPrice
   })
@@ -31,9 +31,12 @@ function AppContent() {
   // Mutations
   const mutation = useMutation({
     mutationFn: getActualRates,
-    onSuccess: (rates) => {
-      console.log('Aqui pon un toast para la actualizacion de los rates', rates)
-      // setear los nuevos datos a la variable data con el mismo formato
+    onSuccess: (rates) => {      
+      data = rates;
+
+      if(Platform.OS === 'android') {
+        ToastAndroid.show('Las tarifas se han actualizado.', ToastAndroid.SHORT);
+      }
     },
     onError: (error) => {
 
