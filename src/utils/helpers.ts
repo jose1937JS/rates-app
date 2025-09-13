@@ -1,5 +1,5 @@
 const unFormatPrice = (price: string) => {
-    return Number(price.replace(/\./g, '').replace(',', '.'));
+    return Number(price.replace(/\,/g, ''));
 }
 
 const formatPrice = (price: number) => {

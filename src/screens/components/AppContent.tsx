@@ -33,6 +33,7 @@ function AppContent() {
     mutationFn: getActualRates,
     onSuccess: (rates) => {
       console.log('Aqui pon un toast para la actualizacion de los rates', rates)
+      // setear los nuevos datos a la variable data con el mismo formato
     },
     onError: (error) => {
 
