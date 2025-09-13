@@ -7,10 +7,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 20,
   },
   square: {
     width: windowWidth * 0.9,
     borderWidth: 1,
+    borderColor: '#666666ff',
     borderRadius: 20,
     alignItems: 'center',
     height: 400,
@@ -24,6 +26,7 @@ const styles = StyleSheet.create({
     width: windowWidth * 0.9 - 40,
     height: 70,
     borderWidth: 1,
+    borderColor: '#666666ff',
     borderRadius: 20,
     marginBottom: 10,
     paddingHorizontal: 15,
@@ -33,6 +36,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderWidth: 1,
+    borderColor: '#666666ff',
     borderRadius: 50,
     marginBottom: 20,
     justifyContent: 'center',
@@ -82,6 +86,20 @@ const styles = StyleSheet.create({
   },
   keyboardAvoidingView: {
     flex: 1,
+  },
+  buttons: {
+    alignSelf: 'flex-end',
+    marginTop: 20,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#666666ff',
+    backgroundColor: '#ffffffc7',
+    borderRadius: 5
+  },
+  reloadButton: {
+    backgroundColor: '#cdcdcd',
+    borderWidth: 1,
+    borderColor: '#a7a7a7ff'
   }
 });
 

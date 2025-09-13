@@ -8,22 +8,44 @@ import {
   KeyboardAvoidingView, 
   Platform,
   Animated,
-  Vibration
+  Vibration,
+  Share,
+  ToastAndroid
 } from 'react-native';
 // import  NumericPad  from  'react-native-numeric-pad'
 import { Lucide } from "@react-native-vector-icons/lucide";
 import { Rate, HomeProps } from '../types/types';
 import styles from './homeStyles';
 import RNShake from 'react-native-shake';
+import { FloatingMenu } from 'react-native-floating-action-menu';
 import { formatPrice, formatDate } from '../utils/helpers';
 
-export default function Home({ rates }: HomeProps) {
-  // console.log({ rates });
+export default function Home({ rates, onRefreshData }: HomeProps) {
+  if(!rates?.length) {
+    return (
+      <View>
+        <Text>Ha habido un error, imtenta recargar la aplicacion</Text>
+        <TouchableOpacity 
+          style={styles.reloadButton} 
+          onPress={() => onRefreshData()}
+        >
+          <Text>Recargar</Text>
+        </TouchableOpacity>
+      </View>
+    )
+  }
 
   const [fromPrice, setFromPrice] = useState<string | number>(1);
   const [toPrice, setToPrice] = useState<string | number>((rates[0].rate).toFixed(2));
   const [selectedCurrency, setSelectedCurrency] = useState<Rate>(rates[0]);
-  const [isPressed, setIsPressed] = useState(false);
+  const [isPressed, setIsPressed] = useState<boolean>(false);
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
+
+  const menuItems = [
+    { label: 'Compartir', icon: 'forward', labelStyle: { color: 'white' } },
+    { label: 'Reiniciar', icon: 'rotate-cw', labelStyle: { color: 'white' } },
+    { label: 'Refrescar', icon: 'circle-dollar-sign', labelStyle: { color: 'white' } },
+  ];
 
   const translateYFromPrice = useRef(new Animated.Value(0)).current;
   const translateYToPrice = useRef(new Animated.Value(0)).current;
@@ -32,16 +54,18 @@ export default function Home({ rates }: HomeProps) {
 
   // Shake event listener to reset prices
   React.useEffect(() => {
-    const subscription = RNShake.addListener(() => {
-      setFromPrice(1);
-      setToPrice((selectedCurrency.rate).toFixed(2));
-      Vibration.vibrate([0, 100]);
-    });
+    const subscription = RNShake.addListener(() => onRefreshValues());
 
     return () => {
       subscription.remove();
     };
   }, []);
+
+  const onRefreshValues = () => {
+    setFromPrice(1);
+    setToPrice((selectedCurrency.rate).toFixed(2));
+    Vibration.vibrate([0, 100]);
+  }
 
   const onPressBadge = (currency: Rate) => {
     setSelectedCurrency(currency);
@@ -93,6 +117,43 @@ export default function Home({ rates }: HomeProps) {
     else {
       setToPrice(result);
     }
+  }
+
+  const onShare = async () => {
+    try {
+      const message = `El precio del ${selectedCurrency.name} es ${toPrice} VES. (1 ${selectedCurrency.name} = ${selectedCurrency.rate} VES) #DollarPriceVisualizer`;
+      await Share.share({ message });
+    } catch (error) {
+      console.error('Error sharing:', error);
+    }
+  }
+
+  const handleMenuToggle = (v: boolean) => {
+    setIsMenuOpen(v)
+  }
+
+  const handleItemPress = (item: any) => {
+    if(item.label == 'Compartir') {
+      onShare()
+    }
+
+    if(item.label == 'Reiniciar') {
+      onRefreshValues()
+      setIsMenuOpen(false)
+
+      if(Platform.OS === 'android') {
+        ToastAndroid.show('Valores restablecidos', ToastAndroid.SHORT);
+      }
+    }
+
+    if(item.label == 'Refrescar') {
+      onRefreshData()
+      setIsMenuOpen(false)
+    }
+  }
+
+  const renderItemIcon = (item: any) => {
+    return <Lucide name={item.icon} color="#555555ff" size={25} />
   }
 
   const onPressMoneyChanger = () => {
@@ -216,6 +277,21 @@ export default function Home({ rates }: HomeProps) {
           </View>
         </View>
       </View>
+
+      <FloatingMenu
+        items={menuItems}
+        isOpen={isMenuOpen}
+        onMenuToggle={handleMenuToggle}
+        onItemPress={handleItemPress}
+        borderColor='#666666ff'
+        bottom={30}
+        right={20}
+        backgroundDownColor='#d2d1d1ff'
+        backgroundUpColor='#ffffff'
+        dimmerStyle={{ backgroundColor: '#1c1c1caf' }}
+        renderItemIcon={renderItemIcon}
+        renderMenuIcon={() => <Lucide name='menu' size={25} />}
+      />
     </KeyboardAvoidingView>
   );
 }

@@ -5597,6 +5597,11 @@ react-native-dotenv@^3.4.11:
   dependencies:
     dotenv "^16.4.5"
 
+react-native-floating-action-menu@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-floating-action-menu/-/react-native-floating-action-menu-2.0.0.tgz#f79369047da859fb3b44b45b8c8aa853cb0a8bd0"
+  integrity sha512-wSuWbs+vLEGE8qrkkZ8+bCNmwBpPGpMn2j/ATfUwSzwKjVPCa3iUzoSdAVVIXJXgKH7n1U9tvzja0/4K9da2nw==
+
 react-native-gesture-handler@^2.28.0:
   version "2.28.0"
   resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-2.28.0.tgz#07fb4f5eae72f810aac3019b060d26c1835bfd0c"

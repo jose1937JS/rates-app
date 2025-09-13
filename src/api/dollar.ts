@@ -14,3 +14,18 @@ export const fetchDollarPrice = async () => {
     throw error;
   }
 };
+
+export const getActualRates = async () => {
+  try {
+    const response = await fetch(`${API_BASE}/get-actual-rates`);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const data = await response.json();
+    console.log('UPDATED', data);
+    return data;
+  } catch (error) {
+    console.error('Error fetching updated rates:', error);
+    throw error;
+  }
+};

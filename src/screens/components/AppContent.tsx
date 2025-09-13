@@ -1,12 +1,12 @@
-import React from 'react';
-import { StyleSheet, ImageBackground, Text, View, Image, Animated } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import React, {useEffect, useState} from 'react';
+import { StyleSheet, ImageBackground, Text, View, Image, Animated,ToastAndroid } from 'react-native';
+// import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Home from '../../screens/Home';
-import { fetchDollarPrice } from '../../api/dollar';
-import { useQuery } from '@tanstack/react-query';
+import { fetchDollarPrice, getActualRates } from '../../api/dollar';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
+  // const safeAreaInsets = useSafeAreaInsets();
   const images = [
     require('../../assets/bg/indra-jaya-cGZVlXFRaqY-unsplash.jpg'),
     require('../../assets/bg/zeq-qayong-0Q96h2BbjgY-unsplash.jpg'),
@@ -22,12 +22,24 @@ function AppContent() {
   const opacity = React.useRef(new Animated.Value(1)).current;
   const animationRef = React.useRef<Animated.CompositeAnimation | null>(null);
 
-  // Animación fadeIn/fadeOut en loop mientras isLoading
-  const {data, error, isLoading} = useQuery({
-    queryKey: ['dollarPrice'],
-    queryFn: fetchDollarPrice,
+  // Queries
+  const { data, isLoading, error } = useQuery({ 
+    queryKey: ['todos'], 
+    queryFn: fetchDollarPrice
+  })
+
+  // Mutations
+  const mutation = useMutation({
+    mutationFn: getActualRates,
+    onSuccess: (rates) => {
+      console.log('Aqui pon un toast para la actualizacion de los rates', rates)
+    },
+    onError: (error) => {
+
+    }
   });
   
+  // Animación fadeIn/fadeOut en loop mientras isLoading
   React.useEffect(() => {
     if (isLoading) {
       opacity.setValue(0);
@@ -65,13 +77,17 @@ function AppContent() {
   const randomIndex = Math.floor(Math.random() * images.length);
   const ramndomImage = images[randomIndex];
 
+  const onRefreshData = () => {
+    mutation.mutate()
+  }
+
   if(error) {
     console.error('Error fetching dollar price:', error);
     <Text>Huvo un error {JSON.stringify(error, null, 4)}</Text>
     return;
   }
 
-  if(isLoading) {
+  if(isLoading || mutation.isPending) {
     return (
       <View style={styles.container}>
         <Animated.View style={{ opacity: opacity }}>
@@ -82,16 +98,12 @@ function AppContent() {
   }
 
   return (
-    <ImageBackground source={ramndomImage} resizeMode="cover"
-      style={[
-        styles.container, 
-        { 
-          padding: 10,
-          paddingTop: safeAreaInsets.top,
-        }
-      ]}
+    <ImageBackground 
+      source={ramndomImage} 
+      resizeMode="cover"
+      style={styles.container}
     >
-      <Home rates={data} />
+      <Home rates={data} onRefreshData={onRefreshData} />
     </ImageBackground>
   );
 }
@@ -99,6 +111,7 @@ function AppContent() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: '100%',
     justifyContent: 'center', 
     alignItems: 'center',
     backgroundColor: '#faf7ed',

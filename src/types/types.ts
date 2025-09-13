@@ -12,6 +12,7 @@ type Rate = {
 }
 interface HomeProps {
 	rates: Rate[];
+	onRefreshData: Function
 }
 
 export type { Currency, Rate, HomeProps };
