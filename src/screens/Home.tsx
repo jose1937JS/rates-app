@@ -130,17 +130,10 @@ export default function Home({ rates, onRefreshData }: HomeProps) {
         const firstCalc = +clearedToPrice / filteredRates[0].rate;
         const secondCalc = +clearedToPrice / filteredRates[1].rate;
 
-        message = `
-          ${toPrice} Bs equivalen a: \n 
-          ${formatPrice(+fromPrice)} ${selectedCurrency.name} \n
-          ${formatPrice(firstCalc)} ${filteredRates[0].name} \n
-          ${formatPrice(secondCalc)} ${filteredRates[1].name}
-        `;
+        message = `${toPrice} Bs equivalen a: \n\n- ${formatPrice(+fromPrice)} ${selectedCurrency.name} \n- ${formatPrice(firstCalc)} ${filteredRates[0].name} \n- ${formatPrice(secondCalc)} ${filteredRates[1].name}`;
       } 
       else {
-        message = `
-          ${fromPrice} ${selectedCurrency.name} equivalen a ${toPrice} Bs
-        `;
+        message = `${fromPrice} ${selectedCurrency.name} equivalen a ${toPrice} Bs`;
       }
       
       await Share.share({ message });
