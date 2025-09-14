@@ -97,9 +97,26 @@ const styles = StyleSheet.create({
     borderRadius: 5
   },
   reloadButton: {
-    backgroundColor: '#cdcdcd',
+    backgroundColor: '#ffe415ff',
     borderWidth: 1,
-    borderColor: '#a7a7a7ff'
+    borderColor: '#fff700ff',
+    padding: 5,
+    borderRadius: 5,
+    width: 100,
+    alignItems: 'center'
+  },
+  textErrContainer: {
+    width: '90%',
+    padding: 20,
+    paddingVertical: 50,
+    alignItems: 'center',
+    backgroundColor: '#252525c0',
+    borderRadius: 20
+  },
+  textErr: {
+    color: '#fff',
+    fontSize: 30,
+    textAlign: 'center',
   }
 });
 

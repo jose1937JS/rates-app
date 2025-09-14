@@ -19,19 +19,12 @@ import styles from './homeStyles';
 import RNShake from 'react-native-shake';
 import { FloatingMenu } from 'react-native-floating-action-menu';
 import { formatPrice, formatDate, unFormatPrice } from '../utils/helpers';
+import ErrorComponent from './components/Error'
 
 export default function Home({ rates, onRefreshData }: HomeProps) {
   if(!rates?.length) {
     return (
-      <View>
-        <Text>Ha habido un error, imtenta recargar la aplicacion</Text>
-        <TouchableOpacity 
-          style={styles.reloadButton} 
-          onPress={() => onRefreshData()}
-        >
-          <Text>Recargar</Text>
-        </TouchableOpacity>
-      </View>
+      <ErrorComponent onRefreshData={onRefreshData} />
     )
   }
 

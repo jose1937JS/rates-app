@@ -4,6 +4,7 @@ import { StyleSheet, ImageBackground, Text, View, Image, Animated,ToastAndroid, 
 import Home from '../../screens/Home';
 import { fetchDollarPrice, getActualRates } from '../../api/dollar';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import ErrorComponent from './Error';
 
 function AppContent() {
   // const safeAreaInsets = useSafeAreaInsets();
@@ -18,21 +19,21 @@ function AppContent() {
     require('../../assets/bg/venti-views-KAyZPC_Q5YM-unsplash.jpg'),
     require('../../assets/bg/warren-bh4LQHcOcxE-unsplash.jpg'),
   ];
-
+  const queryClient = useQueryClient();
   const opacity = React.useRef(new Animated.Value(1)).current;
   const animationRef = React.useRef<Animated.CompositeAnimation | null>(null);
 
   // Queries
   let { data, isLoading, error } = useQuery({ 
-    queryKey: ['todos'], 
+    queryKey: ['rates'], 
     queryFn: fetchDollarPrice
   })
 
   // Mutations
   const mutation = useMutation({
     mutationFn: getActualRates,
-    onSuccess: (rates) => {      
-      data = rates;
+    onSuccess: (res) => {
+      queryClient.setQueryData(['rates'], res.rates);
 
       if(Platform.OS === 'android') {
         ToastAndroid.show('Las tarifas se han actualizado.', ToastAndroid.SHORT);
@@ -81,14 +82,13 @@ function AppContent() {
   const randomIndex = Math.floor(Math.random() * images.length);
   const ramndomImage = images[randomIndex];
 
+  // Ejecuta la mutacion que trae los rates actualizados
   const onRefreshData = () => {
-    mutation.mutate()
+    mutation.mutate();
   }
 
   if(error) {
-    console.error('Error fetching dollar price:', error);
-    <Text>Huvo un error {JSON.stringify(error, null, 4)}</Text>
-    return;
+    return <ErrorComponent onRefreshData={onRefreshData} />
   }
 
   if(isLoading || mutation.isPending) {

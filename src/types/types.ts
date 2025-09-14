@@ -15,4 +15,8 @@ interface HomeProps {
 	onRefreshData: Function
 }
 
-export type { Currency, Rate, HomeProps };
+interface ErrorComponentProps {
+	onRefreshData: Function
+}
+
+export type { Currency, Rate, HomeProps, ErrorComponentProps };
