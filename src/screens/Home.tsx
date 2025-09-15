@@ -1,11 +1,11 @@
-import React, {useRef, useState} from 'react';
-import { 
-  Text, 
-  View, 
-  TextInput, 
-  TouchableOpacity, 
-  Image, 
-  KeyboardAvoidingView, 
+import React, { useRef, useState } from 'react';
+import {
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+  Image,
+  KeyboardAvoidingView,
   Platform,
   Animated,
   Vibration,
@@ -22,7 +22,7 @@ import { formatPrice, formatDate, unFormatPrice } from '../utils/helpers';
 import ErrorComponent from './components/Error'
 
 export default function Home({ rates, onRefreshData }: HomeProps) {
-  if(!rates?.length) {
+  if (!rates?.length) {
     return (
       <ErrorComponent onRefreshData={onRefreshData} />
     )
@@ -105,7 +105,7 @@ export default function Home({ rates, onRefreshData }: HomeProps) {
     const price = isPressed ? from / currency.rate : from * currency.rate;
     const result = formatPrice(price) as unknown as number;
 
-    if(isPressed) {
+    if (isPressed) {
       setFromPrice(result);
     }
     else {
@@ -118,20 +118,20 @@ export default function Home({ rates, onRefreshData }: HomeProps) {
       let message = ''
       const filteredRates = rates.filter((r) => selectedCurrency.name !== r.name);
       const clearedToPrice = unFormatPrice(toPrice.toString())
-      
-      if(isPressed) {
+
+      if (isPressed) {
         const firstCalc = +clearedToPrice / filteredRates[0].rate;
         const secondCalc = +clearedToPrice / filteredRates[1].rate;
 
         message = `${toPrice} Bs equivalen a: \n\n- ${formatPrice(+fromPrice)} ${selectedCurrency.name} \n- ${formatPrice(firstCalc)} ${filteredRates[0].name} \n- ${formatPrice(secondCalc)} ${filteredRates[1].name}`;
-      } 
+      }
       else {
         message = `${fromPrice} ${selectedCurrency.name} equivalen a ${toPrice} Bs`;
       }
-      
+
       await Share.share({ message });
     } catch (error) {
-      console.error('Error sharing:', error);
+      Toast.show("Ha habido un error tratando de compartir la información. Inténtalo nuevamente.", Toast.SHORT);
     }
   }
 
@@ -140,17 +140,17 @@ export default function Home({ rates, onRefreshData }: HomeProps) {
   }
 
   const handleItemPress = (item: any) => {
-    if(item.label == 'Compartir') {
+    if (item.label == 'Compartir') {
       onShare()
     }
 
-    if(item.label == 'Reiniciar') {
+    if (item.label == 'Reiniciar') {
       onRefreshValues()
       setIsMenuOpen(false)
       Toast.show('Valores restablecidos', Toast.SHORT);
     }
 
-    if(item.label == 'Refrescar') {
+    if (item.label == 'Refrescar') {
       onRefreshData()
       setIsMenuOpen(false)
     }
@@ -162,7 +162,7 @@ export default function Home({ rates, onRefreshData }: HomeProps) {
 
   const onPressMoneyChanger = () => {
     // Convierte los valores formateados de vuelta a números para el cálculo
-    if(!isPressed) {
+    if (!isPressed) {
       setToPrice(toPrice);
     }
 
@@ -196,7 +196,7 @@ export default function Home({ rates, onRefreshData }: HomeProps) {
   }
 
   return (
-    <View style={{flex: 1 }}>
+    <View style={{ flex: 1 }}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.keyboardAvoidingView}
@@ -205,13 +205,13 @@ export default function Home({ rates, onRefreshData }: HomeProps) {
           <View style={styles.square}>
             {/* From Money container */}
             <Animated.View
-              style={{ transform: [{ translateY: translateYFromPrice }] } }
+              style={{ transform: [{ translateY: translateYFromPrice }] }}
             >
               <View>
-                <View style={[styles.moneyContainer, { backgroundColor: isPressed ? '#dbdbdbff' :  'transparent' }]}>
-                  { selectedCurrency.currency == 'BCV_USD' && <Image style={styles.currencyIcon} source={require('../assets/bcv.jpeg')} />}
-                  { selectedCurrency.currency == 'BCV_EUR' && <Image style={styles.currencyIcon} source={require('../assets/euro.png')} />}
-                  { selectedCurrency.currency == 'YD_USD' && <Image style={styles.currencyIcon} source={require('../assets/usdt.jpg')} />}
+                <View style={[styles.moneyContainer, { backgroundColor: isPressed ? '#dbdbdbff' : 'transparent' }]}>
+                  {selectedCurrency.currency == 'BCV_USD' && <Image style={styles.currencyIcon} source={require('../assets/bcv.jpeg')} />}
+                  {selectedCurrency.currency == 'BCV_EUR' && <Image style={styles.currencyIcon} source={require('../assets/euro.png')} />}
+                  {selectedCurrency.currency == 'YD_USD' && <Image style={styles.currencyIcon} source={require('../assets/usdt.jpg')} />}
                   <TextInput
                     editable={isPressed ? false : true}
                     autoFocus
@@ -223,9 +223,9 @@ export default function Home({ rates, onRefreshData }: HomeProps) {
                 </View>
                 <View style={styles.badgeContainer}>
                   {rates.map((currency) => (
-                    <TouchableOpacity 
+                    <TouchableOpacity
                       key={Math.random().toString()}
-                      style={currency.currency == selectedCurrency.currency ? [styles.badge, styles.badgeBg] : styles.badge }
+                      style={currency.currency == selectedCurrency.currency ? [styles.badge, styles.badgeBg] : styles.badge}
                       onPress={() => onPressBadge(currency)}
                     >
                       <Text style={styles.badgeText}>{currency.name}</Text>
@@ -234,7 +234,7 @@ export default function Home({ rates, onRefreshData }: HomeProps) {
                 </View>
               </View>
             </Animated.View>
-            
+
             {/* Circle button money changer */}
             <Animated.View
               style={{
@@ -252,12 +252,12 @@ export default function Home({ rates, onRefreshData }: HomeProps) {
                 <Lucide name="arrow-down-up" size={40} />
               </TouchableOpacity>
             </Animated.View>
-            
+
             {/* To Money container */}
             <Animated.View
-              style={{ transform: [{ translateY: translateYToPrice }] } }
+              style={{ transform: [{ translateY: translateYToPrice }] }}
             >
-              <View style={[styles.moneyContainer, { backgroundColor: isPressed ? 'transparent' :  '#ccc' }]}>
+              <View style={[styles.moneyContainer, { backgroundColor: isPressed ? 'transparent' : '#ccc' }]}>
                 <Image style={styles.currencyIcon} source={require('../assets/venezuela.png')} />
                 <TextInput
                   editable={isPressed ? true : false}
@@ -271,14 +271,14 @@ export default function Home({ rates, onRefreshData }: HomeProps) {
             </Animated.View>
 
             {/* Exhample text */}
-            <Animated.View style={{ transform: [{ translateY: translateYRefPrice }] } }>
+            <Animated.View style={{ transform: [{ translateY: translateYRefPrice }] }}>
               <Text style={[styles.textExample, { marginTop: isPressed ? 5 : 20 }]}>
                 1 {selectedCurrency.name} = {selectedCurrency.rate} VES
               </Text>
             </Animated.View>
-            
+
             <View style={{ marginTop: isPressed ? 40 : 20 }}>
-              <Text>Última actualización: { formatDate(selectedCurrency.createdAt) }</Text>
+              <Text>Última actualización: {formatDate(selectedCurrency.createdAt)}</Text>
             </View>
           </View>
         </View>

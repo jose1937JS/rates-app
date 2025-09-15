@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, ImageBackground, View, Image, Animated, Platform} from 'react-native';
+import { StyleSheet, ImageBackground, View, Image, Animated } from 'react-native';
 import Toast from 'react-native-simple-toast';
 import Home from '../../screens/Home';
 import { fetchDollarPrice, getActualRates } from '../../api/dollar';
@@ -32,16 +32,10 @@ function AppContent() {
 
   // Mutations
   const mutation = useMutation({
-    mutationFn: getActualRates,
+    mutationFn: fetchDollarPrice,
     onSuccess: (res) => {
       queryClient.setQueryData(['rates'], res.rates);
-
-      if(Platform.OS === 'android') {
-        Toast.show('Las tarifas se han actualizado.', Toast.SHORT);
-      }
-    },
-    onError: (error) => {
-
+      Toast.show('Las tarifas se han actualizado.', Toast.SHORT);
     }
   });
   
@@ -84,12 +78,16 @@ function AppContent() {
   const ramndomImage = images[randomIndex];
 
   // Ejecuta la mutacion que trae los rates actualizados
-  const onRefreshData = () => {
+  const onRefreshData = async() => {
     mutation.mutate();
   }
 
   if(error) {
-    return <ErrorComponent onRefreshData={onRefreshData} />
+    return (
+      <View style={styles.container}>
+        <ErrorComponent onRefreshData={onRefreshData} />
+      </View>
+    )
   }
 
   if(isLoading || mutation.isPending) {

@@ -1,31 +1,38 @@
 import { API_BASE } from '@env'
+import Toast from 'react-native-simple-toast';
+
+const onError = (error: any) => {
+  // console.error(error);
+  if(error.response.status == 429) {
+    Toast.show(error.data.error, Toast.LONG, {
+      backgroundColor: 'red'
+    })
+  }
+  throw error;
+}
 
 export const fetchDollarPrice = async () => {
   try {
     const response = await fetch(`${API_BASE}/rates/today`);
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
     const data = await response.json();
-    console.log('DATA', data);
+    
+    if (!response.ok) throw { response, data };
+  
     return data;
   } catch (error) {
-    console.error('Error fetching dollar price:', error);
-    throw error;
+    onError(error)
   }
 };
 
 export const getActualRates = async () => {
   try {
     const response = await fetch(`${API_BASE}/get-actual-rates`);
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
     const data = await response.json();
-    console.log('UPDATED', data);
+    
+    if (!response.ok) throw { response, data };
+    
     return data;
   } catch (error) {
-    console.error('Error fetching updated rates:', error);
-    throw error;
+    onError(error)
   }
 };
