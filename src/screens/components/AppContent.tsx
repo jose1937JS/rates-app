@@ -1,10 +1,11 @@
 import React from 'react';
-import { StyleSheet, ImageBackground, Text, View, Image, Animated,ToastAndroid, Platform} from 'react-native';
-// import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { StyleSheet, ImageBackground, View, Image, Animated, Platform} from 'react-native';
+import Toast from 'react-native-simple-toast';
 import Home from '../../screens/Home';
 import { fetchDollarPrice, getActualRates } from '../../api/dollar';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import ErrorComponent from './Error';
+// import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 function AppContent() {
   // const safeAreaInsets = useSafeAreaInsets();
@@ -36,7 +37,7 @@ function AppContent() {
       queryClient.setQueryData(['rates'], res.rates);
 
       if(Platform.OS === 'android') {
-        ToastAndroid.show('Las tarifas se han actualizado.', ToastAndroid.SHORT);
+        Toast.show('Las tarifas se han actualizado.', Toast.SHORT);
       }
     },
     onError: (error) => {

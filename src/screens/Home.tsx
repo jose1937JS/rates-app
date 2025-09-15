@@ -9,10 +9,10 @@ import {
   Platform,
   Animated,
   Vibration,
-  Share,
-  ToastAndroid
+  Share
 } from 'react-native';
 // import  NumericPad  from  'react-native-numeric-pad'
+import Toast from 'react-native-simple-toast';
 import { Lucide } from "@react-native-vector-icons/lucide";
 import { Rate, HomeProps } from '../types/types';
 import styles from './homeStyles';
@@ -58,7 +58,7 @@ export default function Home({ rates, onRefreshData }: HomeProps) {
     setFromPrice(1);
     setToPrice((selectedCurrency.rate).toFixed(2));
     Vibration.vibrate([0, 100]);
-    ToastAndroid.show('Valores restablecidos', ToastAndroid.SHORT);
+    Toast.show('Valores restablecidos', Toast.SHORT);
   }
 
   const onPressBadge = (currency: Rate) => {
@@ -147,10 +147,7 @@ export default function Home({ rates, onRefreshData }: HomeProps) {
     if(item.label == 'Reiniciar') {
       onRefreshValues()
       setIsMenuOpen(false)
-
-      if(Platform.OS === 'android') {
-        ToastAndroid.show('Valores restablecidos', ToastAndroid.SHORT);
-      }
+      Toast.show('Valores restablecidos', Toast.SHORT);
     }
 
     if(item.label == 'Refrescar') {
@@ -300,6 +297,7 @@ export default function Home({ rates, onRefreshData }: HomeProps) {
         dimmerStyle={{ backgroundColor: '#1c1c1caf' }}
         renderItemIcon={renderItemIcon}
         renderMenuIcon={() => <Lucide name='menu' size={25} />}
+        primaryColor="#ffffff"
       />
     </View>
   );

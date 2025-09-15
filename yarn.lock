@@ -5639,6 +5639,11 @@ react-native-shake@^6.7.8:
   resolved "https://registry.yarnpkg.com/react-native-shake/-/react-native-shake-6.7.8.tgz#346c0f43237a2916b8eabf787c1da58e689e88dc"
   integrity sha512-XE4Y+3AJ5gqoqHo0lT5kGwryU1/xeq2wkE6A7hruoS+M97kAZKVdyhkl0LO6deQGdpvBT7HNoJTbmYd8arpm2A==
 
+react-native-simple-toast@^3.3.2:
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/react-native-simple-toast/-/react-native-simple-toast-3.3.2.tgz#9f1c3a92bb56424d3e5d3bc7caf3f29dee819d9b"
+  integrity sha512-jtZa5VXLDc3Rr+1a2eYyviakxOXP8U9AFYp1VWlslApi0wkiNeyAQ4yLZbIY8nayrbHTUSkERiDzKoCsy9v7Dw==
+
 react-native-worklets@^0.4.2:
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/react-native-worklets/-/react-native-worklets-0.4.2.tgz#7b571a64a0d340ffab156f74bc2efc66bda75e57"
