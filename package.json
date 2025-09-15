@@ -8,7 +8,8 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
-    "android:apk": "cd android && ./gradlew assembleRelease"
+    "android:apk": "cd android && ./gradlew assembleRelease",
+    "android:clean": "cd android && ./gradlew clean"
   },
   "dependencies": {
     "@react-native-vector-icons/lucide": "^12.3.0",
