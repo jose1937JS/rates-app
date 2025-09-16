@@ -26,7 +26,7 @@ export const fetchDollarPrice = async () => {
 
 export const getActualRates = async () => {
   try {
-    const response = await fetch(`${API_BASE}/get-actual-rates`);
+    const response = await fetch(`${API_BASE}/get-actual-rates`, { method: 'POST' });
     const data = await response.json();
     
     if (!response.ok) throw { response, data };
