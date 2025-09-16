@@ -32,7 +32,7 @@ function AppContent() {
 
   // Mutations
   const mutation = useMutation({
-    mutationFn: fetchDollarPrice,
+    mutationFn: getActualRates,
     onSuccess: (res) => {
       queryClient.setQueryData(['rates'], res.rates);
       Toast.show('Las tarifas se han actualizado.', Toast.SHORT);
