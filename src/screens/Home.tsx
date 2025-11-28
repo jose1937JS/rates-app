@@ -31,7 +31,7 @@ export default function Home({ rates, onRefreshData }: HomeProps) {
   const [fromPrice, setFromPrice] = useState<string | number>(1);
   const [toPrice, setToPrice] = useState<string | number>((rates[0].rate).toFixed(2));
   const [selectedCurrency, setSelectedCurrency] = useState<Rate>(rates[0]);
-  const [isPressed, setIsPressed] = useState<boolean>(false);
+  const [isPressed, setIsPressed] = useState<boolean>(false); // Para cuando se presiona el botón de cambio de moneda
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
 
   const menuItems = [
@@ -120,10 +120,12 @@ export default function Home({ rates, onRefreshData }: HomeProps) {
       const clearedToPrice = unFormatPrice(toPrice.toString())
 
       if (isPressed) {
-        const firstCalc = +clearedToPrice / filteredRates[0].rate;
-        const secondCalc = +clearedToPrice / filteredRates[1].rate;
-
-        message = `${toPrice} Bs equivalen a: \n\n- ${formatPrice(+fromPrice)} ${selectedCurrency.name} \n- ${formatPrice(firstCalc)} ${filteredRates[0].name} \n- ${formatPrice(secondCalc)} ${filteredRates[1].name}`;
+        if(filteredRates.length > 0) {
+          const firstCalc = +clearedToPrice / filteredRates[0]?.rate;
+          const secondCalc = +clearedToPrice / filteredRates[1]?.rate;
+  
+          message = `${toPrice} Bs equivalen a: \n\n- ${formatPrice(+fromPrice)} ${selectedCurrency?.name} \n- ${formatPrice(firstCalc)} ${filteredRates[0]?.name} \n- ${formatPrice(secondCalc)} ${filteredRates[1]?.name}`;
+        }
       }
       else {
         message = `${fromPrice} ${selectedCurrency.name} equivalen a ${toPrice} Bs`;
@@ -131,6 +133,7 @@ export default function Home({ rates, onRefreshData }: HomeProps) {
 
       await Share.share({ message });
     } catch (error) {
+      console.log('Share error:', error);
       Toast.show("Ha habido un error tratando de compartir la información. Inténtalo nuevamente.", Toast.SHORT);
     }
   }
